@@ -27,10 +27,10 @@ public class adminAdderServlet extends HttpServlet {
             int i = pstmt.executeUpdate();
             if(i>0){
                 pw.println("Admin is successfully added...");
-                pw.println("<a href='adminaddandremove.jsp'>Add More Admins</a>");
+                pw.println("<a href='dashboard.jsp'>Add More Admins</a>");
             }else{
                 pw.println("Something went wrong in adding admin....");
-                pw.println("<a href='adminaddandremove.jsp'>Try Again</a>");
+                pw.println("<a href='dashboard.jsp'>Try Again</a>");
             }
         } catch (Exception e) {
             e.printStackTrace();

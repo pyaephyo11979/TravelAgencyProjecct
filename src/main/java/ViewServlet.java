@@ -32,10 +32,9 @@ public class ViewServlet extends HttpServlet {
             e.printStackTrace();
         }
         if(result){
-            RequestDispatcher rq=request.getRequestDispatcher("dashboard.jsp");
-            rq.forward(request,response);
+            response.sendRedirect("dashboard.jsp");
         }else {
-            RequestDispatcher rp=request.getRequestDispatcher("index.jsp");
+            RequestDispatcher rp=request.getRequestDispatcher("admin.jsp");
             pr.println("<p class='text-center w3-text-red' color='red'>Invalid Username or Password!</p>");
             rp.include(request,response);
         }

@@ -1,44 +1,35 @@
-import java.io.*;
-
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-
+import java.io.*;
 import java.sql.*;
-
-import jakarta.servlet.*;
 
 @WebServlet(name = "BusTicketRemove", value = "/BusTicketRemove")
 public class BusTicketRemove extends HttpServlet {
-
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        PrintWriter pr=response.getWriter();
+        PrintWriter pw = response.getWriter();
+        String startDestination = request.getParameter("rsdn");
+        String finalDestination = request.getParameter("radn");
+        String busName = request.getParameter("bn");
+        String date = request.getParameter("dt");
+        PreparedStatement pstmt;
         Connection con;
-        String SDName=request.getParameter("rsdn");
-        String ADName=request.getParameter("radn");
-        String BusName=request.getParameter("bn");
-        String Date=request.getParameter("dt");
-        PreparedStatement stmt;
-        Statement stm;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/travelagencydb", "root", "root");
-            stmt=con.prepareStatement("delete from bus where sd=? and ad=? and bName=? and date=?");
-            String sql="alter table bus auto_increment=1";
-            stm=con.createStatement();
-            stmt.setString(1,SDName);
-            stmt.setString(2,ADName);
-            stmt.setString(3,BusName);
-            stmt.setString(4,Date);
-            int i=stmt.executeUpdate();
-            stm.executeUpdate(sql);
+            pstmt= con.prepareStatement("delete from bus where sd=? and AD=? and BName=? and date=?");
+            pstmt.setString(1, startDestination);
+            pstmt.setString(2, finalDestination);
+            pstmt.setString(3, busName);
+            pstmt.setString(4, date);
+            int i=pstmt.executeUpdate();
             if(i>0){
-                pr.println("Deleted Bus Successfully!");
-                pr.println("<a href='busticket.jsp'>GoBack..</a>");
+                pw.println("Bus is successfully removed...");
+                pw.println("<a href='dashboard.jsp'>Remove More Buses</a>");
             }else{
-                pr.println("Bus cannot be deleted.");
-                pr.println("<a href='busticket.jsp'>GoBack..</a>");
+                pw.println("Bus is not removed...");
+                pw.println("<a href='dashboard.jsp'>Try Again</a>");
             }
         } catch (Exception e) {
             e.printStackTrace();

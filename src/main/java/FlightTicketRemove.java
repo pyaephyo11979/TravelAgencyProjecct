@@ -1,44 +1,37 @@
-import java.io.*;
-
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-
+import java.io.*;
 import java.sql.*;
-
-import jakarta.servlet.*;
 
 @WebServlet(name = "FlightTicketRemove", value = "/FlightTicketRemove")
 public class FlightTicketRemove extends HttpServlet {
-
-
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        PrintWriter pr=response.getWriter();
-        String sdid=request.getParameter("rsidn");
-        String adid=request.getParameter("raidn");
-        String date=request.getParameter("dt");
-        String fName=request.getParameter("fn");
-        PreparedStatement pstmt,pstmt2;
-        Statement stm;
+        PrintWriter pw = response.getWriter();
+        String startDestinationId = request.getParameter("rsidn");
+        String finalDestinationId = request.getParameter("raidn");
+        String flightName = request.getParameter("fn");
+        String date = request.getParameter("dt");
+        String flightTime = request.getParameter("ft");
+        PreparedStatement pstmt;
         Connection con;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/travelagencydb", "root", "root");
-            pstmt=con.prepareStatement("delete from flight where sdid=? and adid=? and date=? and FName=? ");
-            String sql="alter table flight AUTO_INCREMENT=1";
-            pstmt.setString(1,sdid);
-            pstmt.setString(2,adid);
-            pstmt.setString(3,date);
-            pstmt.setString(4,fName);
-            int i= pstmt.executeUpdate();
-            stm=con.createStatement();
-            stm.executeUpdate(sql);
+            pstmt= con.prepareStatement("delete from flight where SDID=? and adid=? and FName=? and Date=? and ftime=?");
+            pstmt.setString(1, startDestinationId);
+            pstmt.setString(2, finalDestinationId);
+            pstmt.setString(3, flightName);
+            pstmt.setString(4, date);
+            pstmt.setString(5, flightTime);
+            int i=pstmt.executeUpdate();
             if(i>0){
-                pr.println("Flight Deleted Successfully");
-                pr.println("<a href='flightticket.jsp'>Go Back</a>");
+                pw.println("Flight is successfully removed...");
+                pw.println("<a href='dashboard.jsp'>Remove More Flights</a>");
             }else{
-                pr.println("Flight cannot be deleted");
+                pw.println("Flight is not removed...");
+                pw.println("<a href='dashboard.jsp'>Try Again</a>");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,62 +1,49 @@
-import java.io.*;
-
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-
+import java.io.*;
 import java.sql.*;
-
-import jakarta.servlet.*;
 
 @WebServlet(name = "FlightTicketAddServlet", value = "/FlightTicketAddServlet")
 public class FlightTicketAddServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        String SDName = request.getParameter("asdn");
-        String SDidName = request.getParameter("asidn");
-        String ADName = request.getParameter("aadn");
-        String ADidName = request.getParameter("aadidn");
-        String pice= request.getParameter("pr");
-        String date=request.getParameter("dt");
-        String ftime= String.valueOf(request.getParameter("ft"));
-        int qty= Integer.parseInt(request.getParameter("qty"));
-        String flightN=request.getParameter("fn");
-        int price= Integer.parseInt(pice);
-        Connection con;
+        PrintWriter pw = response.getWriter();
+        String startDestination = request.getParameter("asdn");
+        String startDestinationId = request.getParameter("asidn");
+        String finalDestination = request.getParameter("aadn");
+        String finalDestinationId = request.getParameter("aadidn");
+        String flightName = request.getParameter("fn");
+        String date = request.getParameter("dt");
+        String flightTime = request.getParameter("ft");
+        String price = request.getParameter("pr");
+        String availableSeats = request.getParameter("qty");
+        String FlightNO = request.getParameter("FNO");
         PreparedStatement pstmt;
-        Statement stmt;
-        try{
+        Connection con;
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con= DriverManager.getConnection("jdbc:mysql://localhost/travelagencydb","root","root");
-            String sql="select * from flight where sd=? and sdid=? and ad=? and adid=?";
-            pstmt=con.prepareStatement("insert into flight (sd,sdid,ad,adid,FName,date,price,ftime,qty) values(?,?,?,?,?,?,?,?,?)");
-            pstmt.setString(1,SDName);
-            pstmt.setString(2,SDidName);
-            pstmt.setString(3,ADName);
-            pstmt.setString(4,ADidName);
-            pstmt.setString(5,flightN);
-            pstmt.setString(6,date);
-            pstmt.setInt(7,price);
-            pstmt.setString(8,ftime);
-            pstmt.setInt(9,qty);
-            int i=pstmt.executeUpdate();
+            con = DriverManager.getConnection("jdbc:mysql://localhost/travelagencydb", "root", "root");
+            pstmt= con.prepareStatement("insert into flight (SD, SDID, AD, ADID, FName, Date, ftime, Price,qty,flight_No) values(?,?,?,?,?,?,?,?,?,?)");
+            pstmt.setString(1, startDestination);
+            pstmt.setString(2, startDestinationId);
+            pstmt.setString(3, finalDestination);
+            pstmt.setString(4, finalDestinationId);
+            pstmt.setString(5, flightName);
+            pstmt.setString(6, date);
+            pstmt.setString(7, flightTime);
+            pstmt.setString(8, price);
+            pstmt.setString(9, availableSeats);
+            pstmt.setString(10, FlightNO);
+            int i = pstmt.executeUpdate();
             if(i>0){
-                out.println("Flight Added Successfully");
-                out.println("<a href='flightticket.jsp'>Go Back</a>");
+                pw.println("Flight is successfully added...");
+                pw.println("<a href='dashboard.jsp'>Add More Flights</a>");
+            }else{
+                pw.println("Something went wrong in adding flight....");
+                pw.println("<a href='dashboard.jsp'>Try Again</a>");
             }
-            else{
-                out.println("Flight Not Added");
-            }
-            pstmt.close();
-            con.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

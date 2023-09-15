@@ -33,6 +33,9 @@
             <div class=" mt-2">
                 <input type="text" name="pr" class="form-control" placeholder="EnterPrice">
             </div>
+            <div class=" mt-2">
+                <input type="text" name="nos" class="form-control" placeholder="EnterAvailableSeats">
+            </div>
         </div>
         <button type="submit" class="btn mt-2 btn-secondary">AddBus</button>
     </form>
