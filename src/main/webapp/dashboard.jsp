@@ -76,7 +76,7 @@
                 <li class="nav-item"><div class="dropdown">
                     <a data-bs-toggle="dropdown" class="nav-link dropdown fs-4"><i class="fas fa-user-circle"></i></a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a href="admin.jsp" class="dropdown-item" >Logout</a>
+                        <a href="index.jsp?name=<%=sec.getAttribute("name")%>&valid=<%=sec.getAttribute("valid")%>" class="dropdown-item" >Logout</a>
                     </div>
                 </div></li>
             </ul>

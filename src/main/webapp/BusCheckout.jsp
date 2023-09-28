@@ -32,51 +32,51 @@
             <div class="row mt-4 container">
                 <div class="col-6">
                     <div class="form-floating mt-2">
-                        <input type="text" name="ne" id="ne"  value="<%=ss.getAttribute("name")%>" class="form-control" placeholder="">
+                        <input type="text" required name="ne" id="ne"  value="<%=ss.getAttribute("name")%>" class="form-control" placeholder="">
                         <label>Enter Name</label>
                     </div>
                     <div class="form-floating mt-2">
-                        <input type="text" name="em" id="em" value="<%=ss.getAttribute("email")%>" class="form-control" placeholder="">
+                        <input type="text" name="em" required id="em" value="<%=ss.getAttribute("email")%>" class="form-control" placeholder="">
                         <label>Enter Email</label>
                     </div>
                     <div class="form-floating mt-2">
-                        <input type="text" name="nrc" id="nrc" value="<%=ss.getAttribute("nrc")%>" class="form-control" placeholder="">
+                        <input type="text" required pattern="^([0-9]{1,2})\/([A-Z][a-z]|[A-Z][a-z][a-z])([A-Z][a-z]|[A-Z][a-z][a-z])([A-Z][a-z]|[A-Z][a-z][a-z])\([N,P,E]\)[0-9]{6}$" name="nrc" id="nrc" value="<%=ss.getAttribute("nrc")%>" class="form-control" placeholder="">
                         <label>Enter NRC</label>
                     </div>
                     <div class="form-floating mt-2">
-                        <input type="text" name="price"  class="form-control " placeholder="" value="<%=request.getParameter("price")%>">
+                        <input type="text" name="price" required  class="form-control " placeholder="" value="<%=request.getParameter("price")%>">
                         <label>Price</label>
                     </div>
                     <div class="form-date mt-2">
-                        <input type="date" name="date"  value="<%=ss.getAttribute("date")%>" class="form-control">
+                        <input type="date" name="date" required  value="<%=ss.getAttribute("date")%>" class="form-control">
                     </div>
                     <div class="mt-2">
                         <h4 class="fs-5 mb-2">Select Your Payment Method</h4>
-                        <input type="radio" name="payment" value="kpay">KPay
-                        <input type="radio" name="payment" value="wave">Wave
-                        <input type="radio" name="payment" value="cash">Cash
+                        <input type="radio" required name="payment" value="kpay">KPay
+                        <input type="radio" required name="payment" value="wave">Wave
+                        <input type="radio" required name="payment" value="Visa/Master">Visa/Master
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-floating mt-2">
-                        <input type="text" name="bsd" value="<%=request.getParameter("bsd")%>" class="form-control" placeholder="">
+                        <input type="text" name="bsd" required value="<%=request.getParameter("bsd")%>" class="form-control" placeholder="">
                         <label>Start Destination</label>
                     </div>
                     <div class="form-floating mt-2">
-                        <input type="text" name="bad" value="<%=request.getParameter("bad")%>" class="form-control" placeholder="">
+                        <input type="text" name="bad" required value="<%=request.getParameter("bad")%>" class="form-control" placeholder="">
                         <label>Arrival Destination</label>
                     </div>
                     <div class="form-floating mt-2">
-                        <input type="text" name="bnm" value="<%=request.getParameter("bname")%>" class="form-control" placeholder="">
+                        <input type="text" name="bnm" required value="<%=request.getParameter("bname")%>" class="form-control" placeholder="">
                         <label>Enter Bus Name</label>
                     </div>
                     <div class="form-floating mt-2">
-                        <input type="text" name="ph"   class="form-control" placeholder="">
+                        <input type="text" name="ph" required   class="form-control" placeholder="">
                         <label>Enter PhoneNumber</label>
                     </div>
                 </div>
                 <div class="text-center">
-                <input type="submit" class="btn mt-3 mb-3 btn-info" value="OrderNow">
+                <input type="submit" class="btn mt-3 mb-3 btn-info" value="BookNow">
                 </div>
             </div>
         </form>

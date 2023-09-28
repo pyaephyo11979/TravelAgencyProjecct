@@ -82,7 +82,7 @@ public class BusCheckOutServlet extends HttpServlet {
             message.setFrom(new InternetAddress("pyaephyohlaing2kk3@gmail.com"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Booking Confirmation");
-            message.setContent("<style> table,th,tr,td{ border: 1px solid black; border-collapse: collapse; } </style><h1>Booking Confirmation</h1><br><h3>Dear " + name + ",</h3><br><p>Thank you for your order! Your ticket booking has been confirmed.</p><br><table style='border:2px solid black; border-collapse:collapse;'><tr><th>BusName</th><th>From</th><th>To</th><th>Date</th><th>Price</th><th>InvoiceNo.</th></tr><tr><td>"+bn+"</td><td>"+bsd+"</td><td>"+bad+"</td><td>"+date+"</td><td>"+price+"</td><td>"+invoiceNum+"</td></tr></table>", "text/html");
+            message.setContent("<style> table,th,tr,td{ border: 1px solid black; border-collapse: collapse; } </style><body><h1>Booking Confirmation</h1><br><h3>Dear " + name + ",</h3><br><p>Thank you for your order! Your ticket booking has been confirmed.</p><br><table style='border:2px solid black; border-collapse:collapse;'><tr><th>BusName</th><th>From</th><th>To</th><th>Date</th><th>Price</th><th>InvoiceNo.</th></tr><tr><td>"+bn+"</td><td>"+bsd+"</td><td>"+bad+"</td><td>"+date+"</td><td>"+price+"</td><td>"+invoiceNum+"</td></tr></table></body>", "text/html");
             Transport.send(message);
             if(i>0) {
                 String sql="select*from busclient where name='"+name+"' and bid='"+bid+"'";

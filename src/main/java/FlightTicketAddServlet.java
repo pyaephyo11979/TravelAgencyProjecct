@@ -14,7 +14,7 @@ public class FlightTicketAddServlet extends HttpServlet {
         String finalDestination = request.getParameter("aadn");
         String finalDestinationId = request.getParameter("aadidn");
         String flightName = request.getParameter("fn");
-        String date = request.getParameter("dt");
+        Date date = Date.valueOf(request.getParameter("dt"));
         String flightTime = request.getParameter("ft");
         String price = request.getParameter("pr");
         String availableSeats = request.getParameter("qty");
@@ -30,7 +30,7 @@ public class FlightTicketAddServlet extends HttpServlet {
             pstmt.setString(3, finalDestination);
             pstmt.setString(4, finalDestinationId);
             pstmt.setString(5, flightName);
-            pstmt.setString(6, date);
+            pstmt.setDate(6, date);
             pstmt.setString(7, flightTime);
             pstmt.setString(8, price);
             pstmt.setString(9, availableSeats);

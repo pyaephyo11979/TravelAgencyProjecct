@@ -20,7 +20,7 @@ section{
 footer{
     background-color: black;
     min-width: 1000px;
-    height: 250px;
+    height: 280px;
 }
 .homePage{
     min-width:1020px;
@@ -43,5 +43,9 @@ footer{
     min-height: 600px;
 }
 #contact{
-    min-height: 400px;
+    min-height: 500px;
+}
+#Feedbacks{
+    min-width: 1000px;
+    min-height: 500px;
 }

@@ -71,4 +71,58 @@ minus.addEventListener("click",function (){
         nop.value=i;
     }
 });
+let fsd=document.getElementById('fsd');
+let fad=document.getElementById('fad');
+fsd.addEventListener('onfocus',()=>{
+  if(fsd.value===fad.value){
+      fad.style.display='none';
+  }
+})
+let fdate=document.getElementById('fdate');
+let bdate=document.getElementById('bdate');
+let today=new Date().toISOString().split("T")[0];
+fdate.setAttribute('min',today);
+bdate.setAttribute('min',today);
+$(document).ready(function(){
+    $('#fsd').change(()=>{
+        let sd=$('#fsd').val();
+        $('#fad').children().each(function () {
+            if($(this).val()===sd){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        })
+    })
+    $('#fad').change(()=>{
+        let ad=$('#fad').val();
+        $('#fsd').children().each(function () {
+            if($(this).val()===ad){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        })
+    })
+    $('#bsd').change(()=>{
+        let sd=$('#bsd').val();
+        $('#bad').children().each(function () {
+            if($(this).val()===sd){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        })
+    })
+    $('#bad').change(()=>{
+        let ad=$('#bad').val();
+        $('#bsd').children().each(function () {
+            if($(this).val()===ad){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        })
+    })
+});
 AOS.init();

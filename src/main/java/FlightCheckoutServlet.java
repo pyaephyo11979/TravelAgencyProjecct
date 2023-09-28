@@ -85,7 +85,7 @@ public class FlightCheckoutServlet extends HttpServlet {
                 message.setFrom(new InternetAddress("pyaephyohlaing2kk3@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
                 message.setSubject("Booking Confirmation");
-                message.setContent("<style> table,th,tr,td{ border: 1px solid black; border-collapse: collapse; } </style><h1>Booking Confirmation</h1><br><h3>Dear " + name + ",</h3><br><p>Thank you for your order! Your ticket booking has been confirmed.</p><br><table><tr><th>FlightName</th><th>From</th><th>To</th><th>DepartureTime</th><th>Date</th><th>Price</th><th>InvoiceNumber</th><th>FLightNumber</th></tr><tr><td>"+fn+"</td><td>"+sd+"</td><td>"+ad+"</td><td>"+session.getAttribute("ft")+"</td><td>"+dt+"</td><td>"+price+"</td><td>"+invoiceNum+"</td><td>"+FNO+"</td></tr></table>", "text/html");
+                message.setContent("<style> table,th,tr,td{ border: 1px solid black; border-collapse: collapse; } </style><body><h1>Booking Confirmation</h1><br><h3>Dear " + name + ",</h3><br><p>Thank you for your order! Your ticket booking has been confirmed.</p><br><table><tr><th>FlightName</th><th>From</th><th>To</th><th>DepartureTime</th><th>Date</th><th>Price</th><th>InvoiceNumber</th><th>FLightNumber</th></tr><tr><td>"+fn+"</td><td>"+sd+"</td><td>"+ad+"</td><td>"+session.getAttribute("ft")+"</td><td>"+dt+"</td><td>"+price+"</td><td>"+invoiceNum+"</td><td>"+FNO+"</td></tr></table></body>", "text/html");
                 Transport.send(message);
                 sql = "select*from ftclient where Name='" + name + "' and Fid='" + fid + "'";
                 String sql2 = "select*from flight where id=" + fid;

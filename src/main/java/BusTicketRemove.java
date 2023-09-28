@@ -12,7 +12,7 @@ public class BusTicketRemove extends HttpServlet {
         String startDestination = request.getParameter("rsdn");
         String finalDestination = request.getParameter("radn");
         String busName = request.getParameter("bn");
-        String date = request.getParameter("dt");
+        Date date = Date.valueOf(request.getParameter("dt"));
         PreparedStatement pstmt;
         Connection con;
         try {
@@ -22,7 +22,7 @@ public class BusTicketRemove extends HttpServlet {
             pstmt.setString(1, startDestination);
             pstmt.setString(2, finalDestination);
             pstmt.setString(3, busName);
-            pstmt.setString(4, date);
+            pstmt.setDate(4, date);
             int i=pstmt.executeUpdate();
             if(i>0){
                 pw.println("Bus is successfully removed...");

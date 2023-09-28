@@ -27,6 +27,7 @@
             <div class="nav-item"><a href="#home" class="nav-link">Home</a></div>
             <div class="nav-item"><a href="#services" class="nav-link">Services</a></div>
             <div class="nav-item"><a href="#contact" class="nav-link">Contact</a></div>
+            <div class="nav-item"><a href="#Feedbacks" class="nav-link">Feedbacks</a></div>
             <div class="nav-item">
                 <div class="dropdown" id="afterlogindd">
                     <a href="#" id="logins" data-bs-toggle="dropdown" value=""  class="nav-link <%=request.getParameter("valid")%> dropdown-toggle"><%=request.getParameter("name")%></a>
@@ -40,6 +41,7 @@
                     <div class="dropdown-menu dropdown-menu-end">
                         <a href="LoginPage.jsp" class="dropdown-item">Login</a>
                         <a href="SingUp%20page.jsp" class="dropdown-item">Signup</a>
+                        <hr class="dropdown-divider">
                         <a href="admin.jsp" class="dropdown-item">AdminLogin</a>
                     </div>
                 </div>
@@ -51,15 +53,20 @@
     <div id="home" class="homePage">
         <%
             Connection con1;
-            Statement stmt2,stmt3;
-            ResultSet rs2,rs3;
+            Statement stmt2,stmt3,stmt4,stmt5,stmt6,stmt7;
+            ResultSet rs2,rs3,rs4,rs5,rs6,rs7;
             String sql2,sql3;
             try{
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 con1= DriverManager.getConnection("jdbc:mysql://localhost/travelagencydb","root","root");
                 stmt2=con1.createStatement();
-                sql2="select*from flight";
-                rs2=stmt2.executeQuery(sql2);
+                stmt3=con1.createStatement();
+                stmt4=con1.createStatement();
+                stmt5=con1.createStatement();
+                stmt6=con1.createStatement();
+                stmt7=con1.createStatement();
+                stmt2=con1.createStatement();
+                rs2=stmt2.executeQuery("select distinct SD from flight");
         %>
          <div  id="searched" class="container">
                  <p class="homeText mb-4 ">"Once a year, go someplace you've never been before"</p>
@@ -74,46 +81,32 @@
                  <div id="flightPanel" class=" rounded-3 " style="max-height:300px;">
                      <form action="FlightMatchingServlet" class="container" method="post">
                          <div class="row g-2 container ">
-                             <div class="col-2">
-                                 <h4>From</h4>
-                                 <select name="sdn" class="form-select">
+                             <div class="col-3">
+                                 <h4>From <i class="fas fa-plane-departure"></i></h4>
+                                 <select name="sdn" id="fsd" class="form-select">
                                      <% while(rs2.next()){ %>
-                                     <option value="<%=rs2.getString(2)%>"><%=rs2.getString(2)%></option>
-                                     <% } rs2 = stmt2.executeQuery(sql2); %>
+                                     <option  value="<%=rs2.getString(1)%>"><%=rs2.getString(1)%></option>
+                                     <% } rs4 = stmt4.executeQuery("select distinct AD from flight"); %>
                                  </select>
                              </div>
-                             <div class="col-2">
-                                 <h4>To</h4>
-                                 <select name="adn" class="form-select">
-                                     <% while(rs2.next()){ %>
-                                     <option value="<%=rs2.getString(4)%>"><%=rs2.getString(4)%></option>
-                                     <% } rs2 = stmt2.executeQuery(sql2); %>
+                             <div class="col-3">
+                                 <h4>To <i class="fas fa-plane-arrival"></i> </h4>
+                                 <select name="adn" id="fad" class="form-select">
+                                     <% while(rs4.next()){ %>
+                                     <option  value="<%=rs4.getString(1)%>"><%=rs4.getString(1)%></option>
+                                     <% } rs3=stmt2.executeQuery("select distinct SD from bus"); %>
                                  </select>
                              </div>
-                             <div class="col-2">
-                                 <h4>SelectFlightName</h4>
-                                 <select name="fn" class="form-select">
-                                     <% while(rs2.next()){ %>
-                                     <option value="<%=rs2.getString(6)%>"><%=rs2.getString(6)%></option>
-                                     <% } PreparedStatement pstmt2=con1.prepareStatement("select*from bus"); rs3=pstmt2.executeQuery(); %>
-                                 </select>
+                             <div class="col-3">
+                                 <h4>SelectDate <i class="fas fa-calendar-days"></i></h4>
+                                 <input type="date" id="fdate" min="2023-08-01" class="form-control" name="dt" >
                              </div>
-                             <div class="col-2">
-                                 <h4>SelectDate</h4>
-                                 <input type="date" class="form-control" name="dt" >
-                             </div>
-                             <div class=" col-4">
-                                 <h4>Passenger</h4>
-                                 <div class="row g-2 container">
-                                     <div class="col-2">
-                                         <a class="btn bg-white" id="pminus"><i class="fas fa-user-minus"></i></a>
-                                     </div>
-                                     <div class="col-4">
-                                         <input type="text" style="width:90px"  class="ms-1 form-control me1" id="pr" name="qty">
-                                     </div>
-                                     <div class="col-2">
-                                         <a class="btn bg-white" id="pplus"><i class="fas fa-user-plus"></i></a>
-                                     </div>
+                             <div class=" col-3">
+                                 <h4>Passenger <i class="fas fa-users"></i></h4>
+                                 <div class="input-group rounded-3  container" style="width:fit-content; ">
+                                         <a class="btn input-group-text bg-white" id="pminus"><i class="fas fa-user-minus"></i></a>
+                                         <input type="text" style="width:40px;"   class="form-control" id="pr" name="qty">
+                                         <a class="btn input-group-text bg-white" id="pplus"><i class="fas fa-user-plus"></i></a>
                                  </div>
                              </div>
                          </div>
@@ -127,37 +120,31 @@
                      <div class="row  g-2 text-center container">
                          <div class="col-3 ">
                              <h4>SelectStartDestination</h4>
-                             <select name="sdn" class="form-select">
+                             <select name="sdn" id="bsd" class="form-select">
                                  <% while (rs3.next()){%>
-                                 <option value="<%=rs3.getString(2)%>"><%=rs3.getString(2)%></option>
-                                 <%} rs3= pstmt2.executeQuery("select * from bus;");%>
+                                 <option value="<%=rs3.getString(1)%>"><%=rs3.getString(1)%></option>
+                                 <%} rs6= stmt3.executeQuery("select distinct ad from bus;");%>
                              </select>
                          </div>
                          <div class="col-3 ">
                              <h4>SelectArrivalDestination</h4>
-                             <select name="adn" class="form-select">
-                                 <% while (rs3.next()){%>
-                                 <option value="<%=rs3.getString(3)%>"><%=rs3.getString(3)%></option>
+                             <select name="adn" id="bad" class="form-select">
+                                 <% while (rs6.next()){%>
+                                 <option value="<%=rs6.getString(1)%>"><%=rs6.getString(1)%></option>
                                  <% } %>
                              </select>
                          </div>
                          <div class="col-3 ">
                              <h4>SelectDate</h4>
-                             <input type="date" name="dt" class="form-control">
+                             <input type="date" id="bdate" min="2023-08-01" name="dt" class="form-control">
                          </div>
                          <div class="col-3 ">
                              <h4>Passenger</h4>
-                             <div class="row">
-                                 <div class="col-4">
-                                     <a id="minus" class="btn bg-white"><i class="fas fa-user-minus"></i></a>
+                                 <div class="input-group rounded-3  container" style="width:fit-content; ">
+                                     <a class="btn input-group-text bg-white" id="minus"><i class="fas fa-user-minus"></i></a>
+                                     <input type="text" style="width:40px;"   class="form-control" id="nop" name="nop">
+                                     <a class="btn input-group-text bg-white" id="plus"><i class="fas fa-user-plus"></i></a>
                                  </div>
-                                 <div class="col-4">
-                                     <input type="text" name="nop" id="nop" class="form-control" >
-                                 </div>
-                                 <div class="col-4">
-                                     <a id="plus" class="btn bg-white"><i class="fas fa-user-plus"></i></a>
-                                 </div>
-                             </div>
                          </div>
                      </div>
                         <div class="text-center mt-1 ">
@@ -205,55 +192,79 @@
     <div id="contact">
         <div class="row container" data-aos="slide-up" data-aos-duration="3000">
             <h2  class="display-3 text-center mb-1">Contact Us</h2>
-            <div class="col-6 mt-2" data-aos="slide-up" data-aos-duration="3000">
-                <form action="feedbackServlet" method="post">
-                    <div class="form-floating mt-1">
-                        <input type="text" class="form-control"  name="name" placeholder="">
-                        <label>EnterName</label>
-                    </div>
-                    <div class="form-floating mt-1">
-                        <input type="email" class="form-control"  name="email" placeholder="">
-                        <label>EnterEmail</label>
-                    </div>
-                    <div class=" mt-1">
-                        <textarea rows="4" class="form-control" placeholder="EnterMessage" name="message" id="msgbox" ></textarea>
-                    </div>
-                    <div class="mt-2 mb-2">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-            <div class="col-6" data-aos="slide-up" data-aos-duration="3000">
+            <div class="col-6 mt-auto" data-aos="slide-up" data-aos-duration="3000">
                 <div class="row">
                     <div class="col-3">
-                        <h4>Facebook<i class="fab fa-facebook"></i>:</h4>
-                        <h4>Instagram<i class="fab fa-instagram"></i>:</h4>
-                        <h4>Twitter<i class="fab fa-twitter"></i>:</h4>
+                        <h4>Facebook <i class="fab fa-facebook"></i>:</h4>
+                        <h4>Instagram  <i class="fab fa-instagram"></i>:</h4>
+                        <h4>Twitter <i class="fab fa-twitter"></i>:</h4>
                         <h4>Address:</h4>
                     </div>
                     <div class="col-3">
                         <h4><a href="">TravelRelax</a></h4>
                         <h4><a href="">TravelRelax</a></h4>
                         <h4><a href="">TravelRelax</a></h4>
-                        <h4>No.133,MainRoad,MyaukOkklapaQuarter,Yangon</h4>
+                        <h4>No.133,MainRoad,Sittwe</h4>
                     </div>
                 </div>
             </div>
+            <div class="col-6 container" data-aos="slide-up" data-aos-duration="3000">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d458.97847688191354!2d92.90299312026639!3d20.155761595690223!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2smm!4v1694856108143!5m2!1sen!2smm" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+    <div id="Feedbacks" class="container">
+        <h2 class="display-3 m-2 text-center">FeedBacks</h2>
+        <div class="d-flex container justify-content-around">
+        <%
+            Connection c;
+            Statement s;
+            ResultSet r;
+            String sq;
+            try{
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                c= DriverManager.getConnection("jdbc:mysql://localhost/travelagencydb","root","root");
+                s=c.createStatement();
+                sq="select*from feedback";
+                r=s.executeQuery(sq);
+                while (r.next()){
+        %>
+        <div class="card m-1  rounded-3" data-aos="slide-up" data-aos-duration="3000" style="width:350px;">
+            <div class="card-header"><h4>Name: <%=r.getString(1)%> </h4></div>
+           <div class="card-body">
+               <p>Message: <span class="ms-2"><%=r.getString(3)%></span></p>
+           </div>
+        </div>
+            <%
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            %>
         </div>
     </div>
 </section>
 <footer>
     <div class="row g-3">
-        <div class="col-3 container mt-4  text-center">
+        <div class="col-4 container mt-4  text-center">
+            <img src="assets/footerlogo.png" style="width: 30%;">
             <h3 class="text-white">TravelRelaxCo.ltd</h3>
             <h4><a href="mailto:travelrelax@gmail.com" class="text-white">travelrelax@gmail.com</a></h4>
         </div>
-        <div class="col-3 container text-white mt-4 text-center">
+        <div class="col-4 container text-white mt-1 ">
             <h4><a href="flightticketBooking.jsp" class="text-decoration-none text-white">BookFlightTicket</a></h4>
             <h4><a href="busticketbooker.jsp" class="text-decoration-none text-white">BookBusTicket</a></h4>
         </div>
-        <div class="col-3"></div>
-        <div class="col-3"></div>
+        <div class="col-4 mt-auto text-white">
+            <h5 class="fw-bold">DeveloperTeamMembers</h5>
+            <p>PyaePhyoHlaing(1912008)</p>
+            <p>HtunAungLinn(1912010)</p>
+            <p>HsuMonZin(1912039)</p>
+            <p>AyeMyatSoe(1912012)</p>
+            <p>NgweRanAung(1912020)</p>
+            <p>MyoSanAye(19120)</p>
+        </div>
     </div>
 </footer>
 <div class="modal" id="pfmodal">
@@ -276,7 +287,7 @@
                     String sql,sql1;
                 %>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-7">
                         <div class="row">
                             <div class="col-3">
                                 <h4>Name:</h4>
@@ -290,9 +301,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-5">
                         <div class="mt-auto">
                             <a href="UserChange.jsp">ChangeAccountInformations</a>
+                        </div>
+                        <div style="border:2px solid black; padding:10px; width:fit-content;" class="mt-2 ms-3" >
+                            <h4>FeedBack</h4>
+                            <form action="feedbackServlet" method="post">
+                                <div class="form-floating mt-1">
+                                    <input type="text" class="form-control" value="<%=request.getParameter("name")%>"  name="name" placeholder="">
+                                    <label>EnterName</label>
+                                </div>
+                                <div class="form-floating mt-1">
+                                    <input type="email" class="form-control" value="<%=sec.getAttribute("email")%>" name="email" placeholder="">
+                                    <label>EnterEmail</label>
+                                </div>
+                                <div class=" mt-1">
+                                    <textarea rows="4" class="form-control" placeholder="EnterMessage" name="message" id="msgbox" ></textarea>
+                                </div>
+                                <div class="mt-2 mb-2">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -371,7 +401,81 @@
             </div>
             <div class="modal-footer">
                 <div>
-                    <a class="btn btn-danger" href="index.jsp">Logout</a>
+                    <a class="btn btn-danger" href="LogOutServlet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+">Logout</a>
                 </div>
             </div>
         </div>
@@ -380,6 +484,7 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js" integrity="sha512-ToL6UYWePxjhDQKNioSi4AyJ5KkRxY+F1+Fi7Jgh0Hp5Kk2/s8FD7zusJDdonfe5B00Qw+B8taXxF6CFLnqNCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js" integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script><%@include file="homescript.js"%></script>
 </html>

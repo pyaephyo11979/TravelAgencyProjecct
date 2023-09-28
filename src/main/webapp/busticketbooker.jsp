@@ -20,63 +20,70 @@
         #ht{
             text-shadow:3px 5px 4px black;
         }
+        h4{
+            color: white;
+            text-shadow:3px 5px 4px black;
+        }
     </style>
 </head>
 <body>
+<%HttpSession sec=request.getSession();%>
+<div class="header mt-2 ms-1 sticky-top text-left">
+    <a href="index.jsp?name=<%=sec.getAttribute("name")%>&valid=<%=sec.getAttribute("valid")%>" style="width:40px; height: 40px; padding: 10px;" class="btn rounded-circle text-center btn-secondary"><i class="fas fa-home"></i></a>
+</div>
 <div class="container-fluid">
     <%
         Connection con;
-        ResultSet rs;
-        Statement st;
+        ResultSet rs,rs1;
+        Statement st,st1;
         String sql;
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             con=DriverManager.getConnection("jdbc:mysql://localhost/travelagencydb","root","root");
             st=con.createStatement();
-            sql="select * from bus";
+            st1=con.createStatement();
+            sql="select distinct SD from bus";
             rs=st.executeQuery(sql);
 
     %>
-    <div style="margin-top:320px; " class=" container">
+    <div style="margin-top:220px; " class=" container">
         <form method="post" action="BusMatchingServlet">
             <div class="row m-auto container">
                 <div class="">
                     <h2 style="color: white;" id="ht" class="display-4">Search Bus</h2>
                 </div>
                 <div class="col-3 mt-2">
-            <select name="sdn" class="form-select">
+                    <h4>From</h4>
+            <select name="sdn" id="sd" class="form-select">
                 <% while (rs.next()){%>
-                <option value="<%=rs.getString(2)%>"><%=rs.getString(2)%></option>
-                <%} rs=st.executeQuery(sql);%>
+                <option value="<%=rs.getString(1)%>"><%=rs.getString(1)%></option>
+                <%} rs1=st1.executeQuery("select distinct AD from bus");%>
             </select>
             </div>
                 <div class="col-3 mt-2">
-            <select name="adn" class="form-select">
-                <% while (rs.next()){%>
-                <option value="<%=rs.getString(3)%>"><%=rs.getString(3)%></option>
+                    <h4>To</h4>
+            <select name="adn" id="ad" class="form-select">
+                <% while (rs1.next()){%>
+                <option value="<%=rs1.getString(1)%>"><%=rs1.getString(1)%></option>
                 <% } %>
             </select>
             </div>
                 <div class="col-3 mt-2">
-                    <input type="date" name="dt" class="form-control">
+                    <h4>Date</h4>
+                    <input type="date" id="date" name="dt" min="2023-08-01" class="form-control">
                 </div>
                 <div class="col-3 mt-2">
-                    <div class="row">
-                        <div class="col-4">
-                            <a id="minus" class="btn bg-white"><i class="fas fa-user-minus"></i></a>
-                        </div>
-                        <div class="col-4">
-                            <input type="text" name="nop" id="nop" class="form-control" >
-                        </div>
-                        <div class="col-4">
-                            <a id="plus" class="btn bg-white"><i class="fas fa-user-plus"></i></a>
-                        </div>
+                    <h4>Number of Passengers</h4>
+                    <div class="input-group rounded-3  container" style="width:fit-content; ">
+                        <a class="btn input-group-text bg-white" id="minus"><i class="fas fa-user-minus"></i></a>
+                        <input type="text" style="width:70px;"   class="form-control" id="nop" name="nop">
+                        <a class="btn input-group-text bg-white" id="plus"><i class="fas fa-user-plus"></i></a>
                     </div>
                 </div>
             </div>
 
             <div class="text-center mt-2">
-                <input type="submit" value="Search" class="btn btn-primary">
+                <input type="submit" value="Search Bus" class="btn btn-primary">
             </div>
         </form>
     </div>
@@ -94,6 +101,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.js"
         integrity="sha512-Ktf+fv0N8ON+ALPwyuXP9d8usxLqqPL5Ox9EHlqxehMM+h1wIU/AeVWFJwVGGFMddw/67P+KGFvFDhZofz2YEg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js" integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var plus=document.getElementById("plus");
     var minus=document.getElementById("minus");
@@ -110,5 +118,30 @@
             nop.value=i;
         }
     });
+    let date=document.getElementById("date");
+    let today=new Date().toISOString().split('T')[0];
+    date.setAttribute("min",today);
+    $(document).ready(()=>{
+        $('#sd').change(()=>{
+            let sd=$('#sd').val();
+            $('#ad').children().each(function () {
+                if($(this).val()===sd){
+                    $(this).hide();
+                }else{
+                    $(this).show();
+                }
+            })
+        })
+        $('#ad').change(()=>{
+            let ad=$('#ad').val();
+            $('#sd').children().each(function () {
+                if($(this).val()===ad){
+                    $(this).hide();
+                }else{
+                    $(this).show();
+                }
+            })
+        })
+    })
 </script>
 </html>

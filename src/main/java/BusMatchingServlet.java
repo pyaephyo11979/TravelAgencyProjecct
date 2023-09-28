@@ -27,7 +27,7 @@ public class BusMatchingServlet extends HttpServlet {
         String from=request.getParameter("sdn");
         String to=request.getParameter("adn");
         int nop=Integer.parseInt(request.getParameter("nop"));
-        String dt=String.valueOf(request.getParameter("dt"));
+        Date dt=Date.valueOf(request.getParameter("dt"));
         Statement stmt;
         PreparedStatement pstmt;
         String sql;
@@ -36,7 +36,7 @@ public class BusMatchingServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/travelagencydb", "root", "root");
-                sql = "select * from bus where sd='" + from + "' and ad='" + to + "' and date='" +dt+ "' and sno>='"+nop+"'";
+                sql = "select * from bus where SD='" + from + "' and AD='" + to + "' and Date='" +dt+ "' and sno>='"+nop+"'";
                 stmt = con.createStatement();
                 rs = stmt.executeQuery(sql);
                 if (rs.next()) {

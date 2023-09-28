@@ -12,7 +12,7 @@ public class BusTicketAdd extends HttpServlet {
         String startDestination = request.getParameter("asdn");
         String finalDestination = request.getParameter("aadn");
         String busName = request.getParameter("bn");
-        String date = request.getParameter("dt");
+        Date date = Date.valueOf(request.getParameter("dt"));
         String price = request.getParameter("pr");
         String availableSeats = request.getParameter("nos");
         PreparedStatement pstmt;
@@ -24,7 +24,7 @@ public class BusTicketAdd extends HttpServlet {
             pstmt.setString(1, startDestination);
             pstmt.setString(2, finalDestination);
             pstmt.setString(4, busName);
-            pstmt.setString(3, date);
+            pstmt.setDate(3, date);
             pstmt.setString(5, price);
             pstmt.setString(6, availableSeats);
             int i = pstmt.executeUpdate();

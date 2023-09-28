@@ -45,8 +45,8 @@
                 <label class="text-black">EnterEmail</label>
             </div>
             <div class="mt-2 form-floating">
-                <input type="text" class="form-control " name="nrc" required placeholder="">
-                <label class="text-black" >EnterNRCNo</label>
+                <input type="text"  pattern="^([0-9]{1,2})\/([A-Z][a-z]|[A-Z][a-z][a-z])([A-Z][a-z]|[A-Z][a-z][a-z])([A-Z][a-z]|[A-Z][a-z][a-z])\([N,P,E]\)[0-9]{6}$" class="form-control " name="nrc" required placeholder="">
+                <label class="text-black" >EnterNRCNo(Eg:11/SATANA(N)123456)</label>
             </div>
         <div class="mt-2 text-center">
             <button type="submit" class="btn btn-primary">Create Account</button>

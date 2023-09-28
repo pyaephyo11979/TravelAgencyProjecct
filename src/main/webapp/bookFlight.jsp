@@ -67,12 +67,12 @@
                 <label>Price</label>
             </div>
             <div class="form-floating mt-1">
-                <input type="text" class="form-control" required id="nrc" name="nrc" value="<%=session.getAttribute("nrc")%>" placeholder="">
+                <input type="text" pattern="^([0-9]{1,2})\/([A-Z][a-z]|[A-Z][a-z][a-z])([A-Z][a-z]|[A-Z][a-z][a-z])([A-Z][a-z]|[A-Z][a-z][a-z])\([N,P,E]\)[0-9]{6}$" class="form-control" required id="nrc" name="nrc" value="<%=session.getAttribute("nrc")%>" placeholder="">
                 <label>EnterNRC</label>
             </div>
         </div>
             <div class="mt-2 text-center">
-                <button type="submit" class="btn btn-success">CheckOut</button>
+                <button type="submit" class="btn btn-success">BookNow</button>
             </div>
         </form>
     </div>

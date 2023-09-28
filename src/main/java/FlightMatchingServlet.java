@@ -19,14 +19,13 @@ public class FlightMatchingServlet extends HttpServlet {
         String flight=request.getParameter("fn");
         String date=String.valueOf(request.getParameter("dt"));
         int qty=Integer.parseInt(request.getParameter("qty"));
-        System.out.println(qty);
         ResultSet rs;
         Statement stmt;
         Connection con;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/travelagencydb", "root", "root");
-            String sql="select * from flight where sd='"+from+"' and ad='"+to+"' and fname='"+flight+"' and date='"+date+"' and qty>="+qty;
+            String sql="select * from flight where sd='"+from+"' and ad='"+to+"'  and date='"+date+"' and qty>="+qty;
             stmt=con.createStatement();
             rs=stmt.executeQuery(sql);
             if(rs.next()){
@@ -42,7 +41,7 @@ public class FlightMatchingServlet extends HttpServlet {
                 int np=Integer.parseInt(rs.getString(10));
                 int tp=np*qty;
                 session.setAttribute("price",rs.getString(10));
-                response.sendRedirect("bookFlight.jsp?fid="+rs.getInt(1)+"&sd="+rs.getString(2)+"&ad="+rs.getString(4)+"&fn="+rs.getString(6)+"&dt="+rs.getString(7)+"&ft"+rs.getString(8)+"&price="+tp);
+                response.sendRedirect("FlightSelect.jsp?fid="+rs.getInt(1)+"&sd="+rs.getString(2)+"&ad="+rs.getString(4)+"&fn="+rs.getString(6)+"&dt="+rs.getString(7)+"&ft"+rs.getString(8)+"&price="+tp);
             }else{
                 pr.println("<script>alert('No Flight Found');window.location.href='flightticketBooking.jsp';</script>");
             }
